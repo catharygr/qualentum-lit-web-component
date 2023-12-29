@@ -1,4 +1,6 @@
 import { LitElement, html, css } from "lit";
+import { ShoopingCartTimer } from "./shoopingCart-timer.js";
+import { EventTimer } from "./event-timer.js";
 
 export class TimerComponent extends LitElement {
   static styles = css`
@@ -33,11 +35,14 @@ export class TimerComponent extends LitElement {
   `;
   constructor() {
     super();
+    this.type = "shooping-cart";
   }
 
   render() {
     return html`
       <div class="timer-container">
+        <shooping-cart-timer></shooping-cart-timer>
+        <event-timer></event-timer>
         <div class="btn-container">
           <button>Pause</button>
           <button>Play</button>
