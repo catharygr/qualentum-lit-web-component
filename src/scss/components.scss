@@ -1,0 +1,10 @@
+html,
+body {
+  height: 100svh;
+  background-color: var(--secondary-color);
+}
+
+body {
+  display: grid;
+  place-content: center;
+}
