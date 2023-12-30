@@ -51,7 +51,6 @@ export class TimerComponent extends LitElement {
       composed: true,
     });
     this.dispatchEvent(event);
-    console.log("play-padre");
   }
 
   render() {
