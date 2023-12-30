@@ -1,0 +1,26 @@
+{
+  "name": "components-library",
+  "version": "1.0.0",
+  "description": "MR. MAM components library",
+  "main": "index.js",
+  "author": "MR. MAM",
+  "license": "MIT",
+  "type": "module",
+  "module": "./index.js",
+  "exports": {
+    ".": "./index.js",
+    "./timer": "./library/timer/index.js"
+  },
+  "scripts": {
+    "serve": "web-dev-server --node-resolve --watch --open",
+    "build": "sass src/scss:src/css --style compressed",
+    "build:dev": "sass src/scss:src/css --style expanded --watch"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@web/dev-server": "^0.3.6",
+    "sass": "^1.69.4",
+    "lit": "^3.0.0"
+  }
+}
