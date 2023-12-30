@@ -45,13 +45,13 @@ export class TimerComponent extends LitElement {
     this.title = "nada";
   }
 
-  playTimer() {
+  playTimer = () => {
     const event = new CustomEvent("play", {
       bubbles: true,
       composed: true,
     });
     this.dispatchEvent(event);
-  }
+  };
 
   render() {
     return html`
