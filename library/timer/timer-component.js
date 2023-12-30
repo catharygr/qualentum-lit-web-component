@@ -53,6 +53,22 @@ export class TimerComponent extends LitElement {
     this.dispatchEvent(event);
   };
 
+  pauseTimer = () => {
+    const event = new CustomEvent("pause", {
+      bubbles: true,
+      composed: true,
+    });
+    this.dispatchEvent(event);
+  };
+
+  resetTimer = () => {
+    const event = new CustomEvent("reset", {
+      bubbles: true,
+      composed: true,
+    });
+    this.dispatchEvent(event);
+  };
+
   render() {
     return html`
       <div class="timer-container">
@@ -63,9 +79,9 @@ export class TimerComponent extends LitElement {
             ></shopping-cart-timer>`}
 
         <div class="btn-container">
-          <button>Pause</button>
+          <button @click=${this.pauseTimer}>Pause</button>
           <button @click=${this.playTimer}>Play</button>
-          <button>Reset</button>
+          <button @click=${this.resetTimer}>Reset</button>
         </div>
       </div>
     `;
