@@ -36,11 +36,13 @@ export class TimerComponent extends LitElement {
 
   static properties = {
     event: { type: Boolean },
+    title: { type: String },
   };
 
   constructor() {
     super();
     this.event = false;
+    this.title = "nada";
   }
 
   render() {
@@ -48,7 +50,9 @@ export class TimerComponent extends LitElement {
       <div class="timer-container">
         ${this.event
           ? html`<event-timer></even?-timer>`
-          : html`<shopping-cart-timer></shopping-cart-timer>`}
+          : html`<shopping-cart-timer
+              .title=${this.title}
+            ></shopping-cart-timer>`}
 
         <div class="btn-container">
           <button>Pause</button>

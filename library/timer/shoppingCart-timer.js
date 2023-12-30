@@ -4,10 +4,14 @@ export class ShoppingCartTimer extends LitElement {
   constructor() {
     super();
   }
+  static properties = {
+    title: { type: String },
+  };
+
   render() {
     return html`
       <div>
-        <p>Timer</p>
+        <p>${this.title}</p>
       </div>
     `;
   }
