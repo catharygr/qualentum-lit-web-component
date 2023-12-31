@@ -35,20 +35,28 @@ export class TimerComponent extends LitElement {
   `;
 
   static properties = {
-    eventTimer: { type: Boolean },
+    eventtimer: { type: Boolean },
     title: { type: String },
-    btnPause: { type: Boolean },
-    btnPlay: { type: Boolean },
-    btnReset: { type: Boolean },
+    btnpause: { type: Boolean },
+    btnplay: { type: Boolean },
+    btnreset: { type: Boolean },
+    reverse: { type: Boolean },
+    autoreset: { type: Boolean },
+    autostart: { type: Boolean },
+    start: { type: Number },
   };
 
   constructor() {
     super();
-    this.eventTimer = false;
+    this.eventtimer = false;
     this.title = "nada";
-    this.btnPause = false;
-    this.btnPlay = false;
-    this.btnReset = false;
+    this.btnpause = false;
+    this.btnplay = false;
+    this.btnreset = false;
+    this.reverse = false;
+    this.autoreset = false;
+    this.autostart = false;
+    this.start = 0;
   }
 
   playTimer = () => {
@@ -76,20 +84,20 @@ export class TimerComponent extends LitElement {
   render() {
     return html`
       <div class="timer-container">
-        ${this.eventTimer
+        ${this.eventtimer
           ? html`<event-timer></even?-timer>`
           : html`<shopping-cart-timer
               .title=${this.title}
             ></shopping-cart-timer>`}
 
         <div class="btn-container">
-          ${this.btnPause
+          ${this.btnpause
             ? html`<button @click=${this.pauseTimer}>Pause</button>`
             : ""}
-          ${this.btnPlay
+          ${this.btnplay
             ? html`<button @click=${this.playTimer}>Play</button>`
             : ""}
-          ${this.btnReset
+          ${this.btnreset
             ? html`<button @click=${this.resetTimer}>Reset</button>`
             : ""}
         </div>
