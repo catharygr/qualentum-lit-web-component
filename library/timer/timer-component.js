@@ -44,6 +44,7 @@ export class TimerComponent extends LitElement {
     autoreset: { type: Boolean },
     autostart: { type: Boolean },
     start: { type: Number },
+    limit: { type: Number },
   };
 
   constructor() {
@@ -57,6 +58,7 @@ export class TimerComponent extends LitElement {
     this.autoreset = false;
     this.autostart = false;
     this.start = 0;
+    this.limit = 20;
   }
 
   playTimer = () => {
@@ -88,6 +90,11 @@ export class TimerComponent extends LitElement {
           ? html`<event-timer></even?-timer>`
           : html`<shopping-cart-timer
               .title=${this.title}
+              .reverse=${this.reverse}
+              .autoreset=${this.autoreset}
+              .autostart=${this.autostart}
+              .start=${this.start}
+              .limit=${this.limit}
             ></shopping-cart-timer>`}
 
         <div class="btn-container">
