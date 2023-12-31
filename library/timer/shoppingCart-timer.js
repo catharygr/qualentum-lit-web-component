@@ -9,10 +9,13 @@ export class ShoppingCartTimer extends LitElement {
       gap: 0.5rem;
       font-size: 1.2rem;
       padding: 1rem;
+      text-align: center;
     }
 
     .minutes,
     .seconds {
+      display: flex;
+      align-items: center;
       background-color: var(--text-color);
       box-shadow: 0 0 0.5rem var(--primary-color);
       padding: 0.5rem;
@@ -20,12 +23,15 @@ export class ShoppingCartTimer extends LitElement {
     }
 
     .separator {
+      display: flex;
+      align-items: center;
       color: var(--neutral-color);
     }
   `;
 
   constructor() {
     super();
+    this.startInSeconds = null;
   }
   static properties = {
     title: { type: String },
@@ -49,8 +55,44 @@ export class ShoppingCartTimer extends LitElement {
     window.removeEventListener("reset", this.resetTimer, true);
   }
 
+  updated() {
+    this.minutesElements = this.shadowRoot.getElementById("minutes");
+    this.secondsElements = this.shadowRoot.getElementById("seconds");
+  }
+
+  renderDisplay = (time) => {
+    let minutesValue = Math.floor(time / 60);
+    let secondsValue = time % 60;
+
+    this.minutesElements.innerHTML = minutesValue;
+    this.secondsElements.innerHTML = secondsValue;
+  };
+
   playTimer = () => {
-    console.log("play-hijo");
+    this.startInSeconds = this.start;
+
+    if (this.reverse) {
+      const time = setInterval(() => {
+        if (this.startInSeconds <= 0) {
+          clearInterval(time);
+          return;
+        } else {
+          this.startInSeconds--;
+          this.renderDisplay(this.startInSeconds);
+        }
+      }, 1000);
+    } else {
+      this.startInSeconds = 0;
+      const time = setInterval(() => {
+        if (this.startInSeconds >= this.limit) {
+          clearInterval(time);
+          return;
+        } else {
+          this.startInSeconds++;
+          this.renderDisplay(this.startInSeconds);
+        }
+      }, 1000);
+    }
   };
 
   pauseTimer = () => {
