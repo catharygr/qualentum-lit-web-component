@@ -21,7 +21,7 @@ export class TimerComponent extends LitElement {
     }
     button {
       background-color: var(--primary-color);
-      padding: 0.7rem 1.8rem;
+      padding: 0.6rem 1.3rem;
       border: none;
       border-radius: 0.5rem;
       cursor: pointer;

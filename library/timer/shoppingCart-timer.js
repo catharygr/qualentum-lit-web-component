@@ -10,16 +10,20 @@ export class ShoppingCartTimer extends LitElement {
       font-size: 1.2rem;
       padding: 1rem;
       text-align: center;
+      margin-block: 1rem;
     }
 
     .minutes,
     .seconds {
       display: flex;
       align-items: center;
+      justify-content: center;
       background-color: var(--text-color);
       box-shadow: 0 0 0.5rem var(--primary-color);
       padding: 0.5rem;
       border-radius: 0.5rem;
+      width: 1rem;
+      height: 1rem;
     }
 
     .separator {
@@ -47,6 +51,9 @@ export class ShoppingCartTimer extends LitElement {
     window.addEventListener("play", this.playTimer, true);
     window.addEventListener("pause", this.pauseTimer, true);
     window.addEventListener("reset", this.resetTimer, true);
+    if (this.autostart) {
+      this.playTimer();
+    }
   }
   disconnectedCallback() {
     super.disconnectedCallback();
@@ -75,6 +82,11 @@ export class ShoppingCartTimer extends LitElement {
       const time = setInterval(() => {
         if (this.startInSeconds <= 0) {
           clearInterval(time);
+          if (this.autoreset) {
+            this.startInSeconds = this.start;
+            this.renderDisplay(this.startInSeconds);
+            this.playTimer();
+          }
           return;
         } else {
           this.startInSeconds--;
@@ -86,6 +98,11 @@ export class ShoppingCartTimer extends LitElement {
       const time = setInterval(() => {
         if (this.startInSeconds >= this.limit) {
           clearInterval(time);
+          if (this.autoreset) {
+            this.startInSeconds = 0;
+            this.renderDisplay(this.startInSeconds);
+            this.playTimer();
+          }
           return;
         } else {
           this.startInSeconds++;
@@ -99,9 +116,7 @@ export class ShoppingCartTimer extends LitElement {
     console.log("pause-hijo");
   };
 
-  resetTimer = () => {
-    console.log("reset-hijo");
-  };
+  resetTimer = () => {};
 
   render() {
     return html`
