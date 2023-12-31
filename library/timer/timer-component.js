@@ -1,6 +1,6 @@
 import { LitElement, html, css } from "lit";
-import { ShoppingCartTimer } from "./shoppingCart-timer.js";
-import { EventTimer } from "./event-timer.js";
+// import { ShoppingCartTimer } from "./shoppingCart-timer.js";
+// import { EventTimer } from "./event-timer.js";
 
 export class TimerComponent extends LitElement {
   static styles = css`
@@ -35,14 +35,20 @@ export class TimerComponent extends LitElement {
   `;
 
   static properties = {
-    event: { type: Boolean },
+    eventTimer: { type: Boolean },
     title: { type: String },
+    btnPause: { type: Boolean },
+    btnPlay: { type: Boolean },
+    btnReset: { type: Boolean },
   };
 
   constructor() {
     super();
-    this.event = false;
+    this.eventTimer = false;
     this.title = "nada";
+    this.btnPause = false;
+    this.btnPlay = false;
+    this.btnReset = false;
   }
 
   playTimer = () => {
@@ -52,7 +58,6 @@ export class TimerComponent extends LitElement {
     });
     this.dispatchEvent(event);
   };
-
   pauseTimer = () => {
     const event = new CustomEvent("pause", {
       bubbles: true,
@@ -60,7 +65,6 @@ export class TimerComponent extends LitElement {
     });
     this.dispatchEvent(event);
   };
-
   resetTimer = () => {
     const event = new CustomEvent("reset", {
       bubbles: true,
@@ -72,16 +76,22 @@ export class TimerComponent extends LitElement {
   render() {
     return html`
       <div class="timer-container">
-        ${this.event
+        ${this.eventTimer
           ? html`<event-timer></even?-timer>`
           : html`<shopping-cart-timer
               .title=${this.title}
             ></shopping-cart-timer>`}
 
         <div class="btn-container">
-          <button @click=${this.pauseTimer}>Pause</button>
-          <button @click=${this.playTimer}>Play</button>
-          <button @click=${this.resetTimer}>Reset</button>
+          ${this.btnPause
+            ? html`<button @click=${this.pauseTimer}>Pause</button>`
+            : ""}
+          ${this.btnPlay
+            ? html`<button @click=${this.playTimer}>Play</button>`
+            : ""}
+          ${this.btnReset
+            ? html`<button @click=${this.resetTimer}>Reset</button>`
+            : ""}
         </div>
       </div>
     `;
