@@ -1,6 +1,29 @@
 import { LitElement, html, css } from "lit";
 
 export class ShoppingCartTimer extends LitElement {
+  static styles = css`
+    .display {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      gap: 0.5rem;
+      font-size: 1.2rem;
+      padding: 1rem;
+    }
+
+    .minutes,
+    .seconds {
+      background-color: var(--text-color);
+      box-shadow: 0 0 0.5rem var(--primary-color);
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+    }
+
+    .separator {
+      color: var(--neutral-color);
+    }
+  `;
+
   constructor() {
     super();
   }
