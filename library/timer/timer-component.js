@@ -87,7 +87,7 @@ export class TimerComponent extends LitElement {
     return html`
       <div class="timer-container">
         ${this.eventtimer
-          ? html`<event-timer></even?-timer>`
+          ? html`<event-timer></event-timer>`
           : html`<shopping-cart-timer
               .title=${this.title}
               .reverse=${this.reverse}

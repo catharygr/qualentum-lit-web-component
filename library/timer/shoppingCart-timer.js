@@ -6,6 +6,11 @@ export class ShoppingCartTimer extends LitElement {
   }
   static properties = {
     title: { type: String },
+    reverse: { type: Boolean },
+    autoreset: { type: Boolean },
+    autostart: { type: Boolean },
+    start: { type: Number },
+    limit: { type: Number },
   };
 
   connectedCallback() {
@@ -21,22 +26,24 @@ export class ShoppingCartTimer extends LitElement {
     window.removeEventListener("reset", this.resetTimer, true);
   }
 
-  playTimer() {
+  playTimer = () => {
     console.log("play-hijo");
-  }
+  };
 
-  pauseTimer() {
+  pauseTimer = () => {
     console.log("pause-hijo");
-  }
+  };
 
-  resetTimer() {
+  resetTimer = () => {
     console.log("reset-hijo");
-  }
+  };
 
   render() {
     return html`
-      <div>
-        <p>${this.title}</p>
+      <div class="display">
+        <div id="minutes" class="minutes">00</div>
+        <div class="separator">:</div>
+        <div id="seconds" class="seconds">00</div>
       </div>
     `;
   }
