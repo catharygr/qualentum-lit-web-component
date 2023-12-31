@@ -116,7 +116,9 @@ export class ShoppingCartTimer extends LitElement {
     console.log("pause-hijo");
   };
 
-  resetTimer = () => {};
+  resetTimer = () => {
+    console.log("reset-hijo");
+  };
 
   render() {
     return html`
