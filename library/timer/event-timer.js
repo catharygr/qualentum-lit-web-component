@@ -2,17 +2,43 @@ import { LitElement, html, css } from "lit";
 
 export class EventTimer extends LitElement {
   static styles = css`
-    div {
-      font-family: Arial, sans-serif;
+    .display {
       display: flex;
-      justify-content: space-around;
+      flex-direction: row;
+      justify-content: center;
+      gap: 0.5rem;
+      font-size: 1.2rem;
+      padding: 1rem;
+      text-align: center;
+      margin-block: 1rem;
     }
-    span {
-      color: blue;
-      font-size: 20px;
+    .days,
+    .hours,
+    .minutes,
+    .seconds {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--text-color);
+      box-shadow: 0 0 0.5rem var(--primary-color);
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      width: 1rem;
+      height: 1rem;
+    }
+
+    .separator {
+      display: flex;
+      align-items: center;
+      color: var(--neutral-color);
     }
   `;
 
+  constructor() {
+    super();
+    this.timeInSeconds = 0;
+    this.timer = null;
+  }
   static properties = {
     start: { type: Number },
     limit: { type: Number },
@@ -20,26 +46,27 @@ export class EventTimer extends LitElement {
     autoreset: { type: Boolean },
     doubledigits: { type: Boolean },
   };
-  constructor() {
-    super();
-    this.start = 0;
-    this.limit = 0;
-    this.autostart = false;
-    this.autoreset = false;
-    this.doubledigits = false;
-    this.timeInSeconds = 0;
-    this.intervalID = null;
-  }
   connectedCallback() {
     super.connectedCallback();
+    window.addEventListener("play", this.playTimer, true);
+    window.addEventListener("pause", this.pauseTimer, true);
+    window.addEventListener("reset", this.resetTimer, true);
+    // Auto start
     if (this.autostart) {
-      this.startTimer();
+      this.playTimer();
+      const event = new CustomEvent("timer-autostart", {
+        bubbles: true,
+        composed: true,
+      });
+      this.dispatchEvent(event);
     }
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    clearInterval(this.intervalID);
+    window.removeEventListener("play", this.playTimer, true);
+    window.removeEventListener("pause", this.pauseTimer, true);
+    window.removeEventListener("reset", this.resetTimer, true);
   }
 
   updated() {
@@ -50,18 +77,12 @@ export class EventTimer extends LitElement {
   }
 
   startTimer = () => {
-    this.timeInSeconds = this.start;
-    this.intervalID = setInterval(() => {
-      if (this.timeInSeconds >= this.limit) {
-        clearInterval(interval);
-        if (this.autoreset) {
-          this.startTimer();
-        }
-        return;
-      }
-      this.timeInSeconds++;
-      this.requestUpdate();
-    }, 1000);
+    if (this.timeInSeconds === 0) {
+      this.timeInSeconds = this.start;
+    }
+    if (this.reverse) {
+      this.timer = setInterval(() => {}, 1000);
+    }
   };
 
   render() {
@@ -72,10 +93,21 @@ export class EventTimer extends LitElement {
 
     return html`
       <div class="display">
-        <span>${this.doubledigits ? this.pad(days) : days} days</span>
-        <span>${this.doubledigits ? this.pad(hours) : hours} hours</span>
-        <span>${this.doubledigits ? this.pad(minutes) : minutes} minutes</span>
-        <span>${this.doubledigits ? this.pad(seconds) : seconds} seconds</span>
+        <div id="days" class="days">
+          ${this.doubledigits ? this.pad(days) : days} days
+        </div>
+        <div class="separator">:</div>
+        <div id="hours" class="hours">
+          ${this.doubledigits ? this.pad(hours) : hours} hours
+        </div>
+        <div class="separator">:</div>
+        <div id="minutes" class="minutes">
+          ${this.doubledigits ? this.pad(minutes) : minutes} minutes
+        </div>
+        <div class="separator">:</div>
+        <div id="seconds" class="seconds">
+          ${this.doubledigits ? this.pad(seconds) : seconds} seconds
+        </div>
       </div>
     `;
   }
