@@ -51,6 +51,7 @@ export class TimerComponent extends LitElement {
     autostart: { type: Boolean },
     start: { type: Number },
     limit: { type: Number },
+    doubledigits: { type: Boolean },
     playDisabled: { type: Boolean },
     pauseDisabled: { type: Boolean },
     resetDisabled: { type: Boolean },
@@ -68,25 +69,32 @@ export class TimerComponent extends LitElement {
     this.autostart = false;
     this.start = 0;
     this.limit = 20;
+    this.doubledigits = false;
     this.playDisabled = false;
     this.pauseDisabled = true;
     this.resetDisabled = false;
-    this.alert = "Timer";
   }
 
   connectedCallback() {
     super.connectedCallback();
     window.addEventListener("timer-end", this.timerEnd);
+    window.addEventListener("timer-autostart", this.autoPlayTimer);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     window.removeEventListener("timer-end", this.timerEnd);
+    window.removeEventListener("timer-autostart", this.autoPlayTimer);
   }
 
   updated() {
     this.alert = this.shadowRoot.getElementById("alert");
   }
+
+  autoPlayTimer = () => {
+    this.playDisabled = true;
+    this.pauseDisabled = false;
+  };
 
   timerEnd = (event) => {
     if (this.autoreset) {

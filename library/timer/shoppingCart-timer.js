@@ -56,6 +56,11 @@ export class ShoppingCartTimer extends LitElement {
     // Auto start
     if (this.autostart) {
       this.playTimer();
+      const event = new CustomEvent("timer-autostart", {
+        bubbles: true,
+        composed: true,
+      });
+      this.dispatchEvent(event);
     }
   }
   disconnectedCallback() {
