@@ -144,6 +144,7 @@ export class TimerComponent extends LitElement {
               .autostart=${this.autostart}
               .start=${this.start}
               .limit=${this.limit}
+              .doubledigits=${this.doubledigits}
             ></shopping-cart-timer>`}
 
         <div class="btn-container">

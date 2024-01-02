@@ -45,6 +45,7 @@ export class ShoppingCartTimer extends LitElement {
     autostart: { type: Boolean },
     start: { type: Number },
     limit: { type: Number },
+    doubledigits: { type: Boolean },
   };
 
   connectedCallback() {
@@ -79,8 +80,14 @@ export class ShoppingCartTimer extends LitElement {
     let minutesValue = Math.floor(time / 60);
     let secondsValue = time % 60;
 
-    this.minutesElements.innerHTML = minutesValue;
-    this.secondsElements.innerHTML = secondsValue;
+    this.minutesElements.innerHTML =
+      this.doubledigits && minutesValue < 10
+        ? `0${minutesValue}`
+        : minutesValue;
+    this.secondsElements.innerHTML =
+      this.doubledigits && secondsValue < 10
+        ? `0${secondsValue}`
+        : secondsValue;
   };
 
   playTimer = () => {
