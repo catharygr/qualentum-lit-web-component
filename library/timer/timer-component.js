@@ -45,6 +45,9 @@ export class TimerComponent extends LitElement {
     autostart: { type: Boolean },
     start: { type: Number },
     limit: { type: Number },
+    playDisabled: { type: Boolean },
+    pauseDisabled: { type: Boolean },
+    resetDisabled: { type: Boolean },
   };
 
   constructor() {
@@ -59,6 +62,9 @@ export class TimerComponent extends LitElement {
     this.autostart = false;
     this.start = 0;
     this.limit = 20;
+    this.playDisabled = false;
+    this.pauseDisabled = false;
+    this.resetDisabled = false;
   }
 
   playTimer = () => {
@@ -99,13 +105,28 @@ export class TimerComponent extends LitElement {
 
         <div class="btn-container">
           ${this.btnpause
-            ? html`<button @click=${this.pauseTimer}>Pause</button>`
+            ? html`<button
+                @click=${this.pauseTimer}
+                ?disabled=${this.pauseDisabled}
+              >
+                Pause
+              </button>`
             : ""}
           ${this.btnplay
-            ? html`<button @click=${this.playTimer}>Play</button>`
+            ? html`<button
+                @click=${this.playTimer}
+                ?disabled=${this.playDisabled}
+              >
+                Play
+              </button>`
             : ""}
           ${this.btnreset
-            ? html`<button @click=${this.resetTimer}>Reset</button>`
+            ? html`<button
+                @click=${this.resetTimer}
+                ?disabled=${this.resetDisabled}
+              >
+                Reset
+              </button>`
             : ""}
         </div>
       </div>
