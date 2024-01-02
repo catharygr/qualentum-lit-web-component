@@ -13,6 +13,12 @@ export class TimerComponent extends LitElement {
       padding: 1.5rem;
       border-radius: 0.5rem;
     }
+    h3 {
+      text-align: center;
+      margin-block: 0;
+      color: var(--primary-color);
+    }
+
     .btn-container {
       display: flex;
       flex-direction: row;
@@ -65,6 +71,7 @@ export class TimerComponent extends LitElement {
     this.playDisabled = false;
     this.pauseDisabled = true;
     this.resetDisabled = false;
+    this.alert = "Timer";
   }
 
   connectedCallback() {
@@ -77,10 +84,15 @@ export class TimerComponent extends LitElement {
     window.removeEventListener("timer-end", this.timerEnd);
   }
 
-  timerEnd = () => {
+  updated() {
+    this.alert = this.shadowRoot.getElementById("alert");
+  }
+
+  timerEnd = (event) => {
     if (this.autoreset) {
       return;
     }
+    this.alert.textContent = event.detail.message;
     this.playDisabled = false;
     this.pauseDisabled = true;
   };
@@ -114,6 +126,7 @@ export class TimerComponent extends LitElement {
   render() {
     return html`
       <div class="timer-container">
+        <h3 id="alert">Timer</h3>
         ${this.eventtimer
           ? html`<event-timer></event-timer>`
           : html`<shopping-cart-timer

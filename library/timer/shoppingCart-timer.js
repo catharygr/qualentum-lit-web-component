@@ -90,7 +90,7 @@ export class ShoppingCartTimer extends LitElement {
           // Evento de finalización del timer
           const event = new CustomEvent("timer-end", {
             detail: {
-              message: "El tiempo ha terminado",
+              message: "Timer ended",
             },
             bubbles: true,
             composed: true,
@@ -117,7 +117,7 @@ export class ShoppingCartTimer extends LitElement {
           // Evento de finalización del timer
           const event = new CustomEvent("timer-end", {
             detail: {
-              message: "El tiempo ha terminado",
+              message: "Timer ended",
             },
             bubbles: true,
             composed: true,
