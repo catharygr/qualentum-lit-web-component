@@ -136,12 +136,13 @@ export class TimerComponent extends LitElement {
       <div class="timer-container">
         <h3 id="alert">Timer</h3>
         ${this.eventtimer
-          ? html`<event-timer></event-timer    
-          .start=${this.start}
-          .limit=${this.limit}
-          .autostart=${this.autostart}
-          .autoreset=${this.autoreset}
-          .doubledigits=${this.doubledigits}>`
+          ? html`<event-timer
+              .start=${this.start}
+              .limit=${this.limit}
+              .autostart=${this.autostart}
+              .autoreset=${this.autoreset}
+              .doubledigits=${this.doubledigits}
+            ></event-timer>`
           : html`<shopping-cart-timer
               .title=${this.title}
               .reverse=${this.reverse}

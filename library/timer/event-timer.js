@@ -28,6 +28,7 @@ export class EventTimer extends LitElement {
     this.autoreset = false;
     this.doubledigits = false;
     this.timeInSeconds = 0;
+    this.intervalID = null;
   }
   connectedCallback() {
     super.connectedCallback();
@@ -36,9 +37,14 @@ export class EventTimer extends LitElement {
     }
   }
 
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    clearInterval(this.intervalID);
+  }
+
   startTimer = () => {
     this.timeInSeconds = this.start;
-    const interval = setInterval(() => {
+    this.intervalID = setInterval(() => {
       if (this.timeInSeconds >= this.limit) {
         clearInterval(interval);
         if (this.autoreset) {
