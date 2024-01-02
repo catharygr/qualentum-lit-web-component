@@ -42,6 +42,13 @@ export class EventTimer extends LitElement {
     clearInterval(this.intervalID);
   }
 
+  updated() {
+    this.daysElements = this.shadowRoot.getElementById("days");
+    this.hoursElements = this.shadowRoot.getElementById("hours");
+    this.minutesElements = this.shadowRoot.getElementById("minutes");
+    this.secondsElements = this.shadowRoot.getElementById("seconds");
+  }
+
   startTimer = () => {
     this.timeInSeconds = this.start;
     this.intervalID = setInterval(() => {
@@ -64,7 +71,7 @@ export class EventTimer extends LitElement {
     const days = Math.floor(this.timeInSeconds / 86400);
 
     return html`
-      <div>
+      <div class="display">
         <span>${this.doubledigits ? this.pad(days) : days} days</span>
         <span>${this.doubledigits ? this.pad(hours) : hours} hours</span>
         <span>${this.doubledigits ? this.pad(minutes) : minutes} minutes</span>
@@ -78,4 +85,9 @@ export class EventTimer extends LitElement {
   }
 }
 
-customElements.define("event-timer", EventTimer);
+// customElements.define("event-timer", EventTimer);
+// <div class="display">
+// <div id="minutes" class="minutes">00</div>
+// <div class="separator">:</div>
+// <div id="seconds" class="seconds">00</div>
+// </div>
