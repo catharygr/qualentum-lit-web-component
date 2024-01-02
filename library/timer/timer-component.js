@@ -67,6 +67,24 @@ export class TimerComponent extends LitElement {
     this.resetDisabled = false;
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+    window.addEventListener("timer-end", this.timerEnd);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    window.removeEventListener("timer-end", this.timerEnd);
+  }
+
+  timerEnd = () => {
+    if (this.autoreset) {
+      return;
+    }
+    this.playDisabled = false;
+    this.pauseDisabled = true;
+  };
+
   playTimer = () => {
     const event = new CustomEvent("play", {
       bubbles: true,

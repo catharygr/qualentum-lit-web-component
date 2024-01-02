@@ -35,7 +35,8 @@ export class ShoppingCartTimer extends LitElement {
 
   constructor() {
     super();
-    this.startInSeconds = null;
+    this.startInSeconds = 0;
+    this.timer = null;
   }
   static properties = {
     title: { type: String },
@@ -51,6 +52,8 @@ export class ShoppingCartTimer extends LitElement {
     window.addEventListener("play", this.playTimer, true);
     window.addEventListener("pause", this.pauseTimer, true);
     window.addEventListener("reset", this.resetTimer, true);
+
+    // Auto start
     if (this.autostart) {
       this.playTimer();
     }
@@ -76,12 +79,25 @@ export class ShoppingCartTimer extends LitElement {
   };
 
   playTimer = () => {
-    this.startInSeconds = this.start;
-
+    if (this.startInSeconds === 0) {
+      this.startInSeconds = this.start;
+    }
     if (this.reverse) {
-      const time = setInterval(() => {
+      this.timer = setInterval(() => {
         if (this.startInSeconds <= 0) {
-          clearInterval(time);
+          clearInterval(this.timer);
+
+          // Evento de finalización del timer
+          const event = new CustomEvent("timer-end", {
+            detail: {
+              message: "El tiempo ha terminado",
+            },
+            bubbles: true,
+            composed: true,
+          });
+          this.dispatchEvent(event);
+
+          // Autoreset
           if (this.autoreset) {
             this.startInSeconds = this.start;
             this.renderDisplay(this.startInSeconds);
@@ -95,9 +111,19 @@ export class ShoppingCartTimer extends LitElement {
       }, 1000);
     } else {
       this.startInSeconds = 0;
-      const time = setInterval(() => {
+      this.timer = setInterval(() => {
         if (this.startInSeconds >= this.limit) {
-          clearInterval(time);
+          clearInterval(this.timer);
+          // Evento de finalización del timer
+          const event = new CustomEvent("timer-end", {
+            detail: {
+              message: "El tiempo ha terminado",
+            },
+            bubbles: true,
+            composed: true,
+          });
+          this.dispatchEvent(event);
+          // Autoreset
           if (this.autoreset) {
             this.startInSeconds = 0;
             this.renderDisplay(this.startInSeconds);
@@ -113,7 +139,7 @@ export class ShoppingCartTimer extends LitElement {
   };
 
   pauseTimer = () => {
-    console.log("pause-hijo");
+    clearInterval(this.timer);
   };
 
   resetTimer = () => {
