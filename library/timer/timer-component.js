@@ -63,7 +63,7 @@ export class TimerComponent extends LitElement {
     this.start = 0;
     this.limit = 20;
     this.playDisabled = false;
-    this.pauseDisabled = false;
+    this.pauseDisabled = true;
     this.resetDisabled = false;
   }
 
@@ -73,6 +73,8 @@ export class TimerComponent extends LitElement {
       composed: true,
     });
     this.dispatchEvent(event);
+    this.playDisabled = true;
+    this.pauseDisabled = false;
   };
   pauseTimer = () => {
     const event = new CustomEvent("pause", {
@@ -80,6 +82,8 @@ export class TimerComponent extends LitElement {
       composed: true,
     });
     this.dispatchEvent(event);
+    this.playDisabled = false;
+    this.pauseDisabled = true;
   };
   resetTimer = () => {
     const event = new CustomEvent("reset", {
@@ -106,24 +110,24 @@ export class TimerComponent extends LitElement {
         <div class="btn-container">
           ${this.btnpause
             ? html`<button
-                @click=${this.pauseTimer}
                 ?disabled=${this.pauseDisabled}
+                @click=${this.pauseTimer}
               >
                 Pause
               </button>`
             : ""}
           ${this.btnplay
             ? html`<button
-                @click=${this.playTimer}
                 ?disabled=${this.playDisabled}
+                @click=${this.playTimer}
               >
                 Play
               </button>`
             : ""}
           ${this.btnreset
             ? html`<button
-                @click=${this.resetTimer}
                 ?disabled=${this.resetDisabled}
+                @click=${this.resetTimer}
               >
                 Reset
               </button>`
