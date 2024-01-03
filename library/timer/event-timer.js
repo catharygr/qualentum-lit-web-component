@@ -94,6 +94,23 @@ export class EventTimer extends LitElement {
   }
 
   renderDisplay(time) {
+    const days = Math.floor(time / 86400);
+    const hours = Math.floor((time % 86400) / 3600);
+    const minutes = Math.floor((time % 3600) / 60);
+    const seconds = Math.floor(time % 60);
+
+    if (this.doubledigits) {
+      this.daysElements.innerHTML = this.pad(days);
+      this.hoursElements.innerHTML = this.pad(hours);
+      this.minutesElements.innerHTML = this.pad(minutes);
+      this.secondsElements.innerHTML = this.pad(seconds);
+    } else {
+      this.daysElements.innerHTML = days;
+      this.hoursElements.innerHTML = hours;
+      this.minutesElements.innerHTML = minutes;
+      this.secondsElements.innerHTML = seconds;
+    }
+  }
 
   playTimer = () => {
     if (this.reverse) {
@@ -121,7 +138,7 @@ export class EventTimer extends LitElement {
           this.renderDisplay(this.timeInSeconds);
         }
       }, 1000);
-    }  else {
+    } else {
       this.timer = setInterval(() => {
         this.timeInSeconds++;
         if (this.timeInSeconds >= this.limit) {
@@ -149,13 +166,18 @@ export class EventTimer extends LitElement {
     }
   };
 
-  startTimer = () => {
-    if (this.timeInSeconds === 0) {
-      this.timeInSeconds = this.start;
-    }
+  pauseTimer = () => {
+    clearInterval(this.timer);
+  };
+
+  resetTimer = () => {
+    clearInterval(this.timer);
     if (this.reverse) {
-      this.timer = setInterval(() => {}, 1000);
+      this.timeInSeconds = this.start;
+    } else if (!this.reverse) {
+      this.timeInSeconds = 0;
     }
+    this.renderDisplay(this.timeInSeconds);
   };
 
   render() {
@@ -177,9 +199,4 @@ export class EventTimer extends LitElement {
   }
 }
 
-// customElements.define("event-timer", EventTimer);
-// <div class="display">
-// <div id="minutes" class="minutes">00</div>
-// <div class="separator">:</div>
-// <div id="seconds" class="seconds">00</div>
-// </div>
+>
