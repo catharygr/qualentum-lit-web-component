@@ -199,4 +199,4 @@ export class EventTimer extends LitElement {
   }
 }
 
->
+customElements.define("event-timer", EventTimer);
