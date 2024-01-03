@@ -59,8 +59,8 @@ export class TimerComponent extends LitElement {
 
   constructor() {
     super();
-    this.eventtimer = false;
-    this.shoppingcarttimer = true;
+    this.eventtimer = true;
+    this.shoppingcarttimer = false;
     this.btnpause = false;
     this.btnplay = false;
     this.btnreset = false;
