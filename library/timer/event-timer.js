@@ -198,5 +198,3 @@ export class EventTimer extends LitElement {
     return number.toString().padStart(2, "0");
   }
 }
-
-customElements.define("event-timer", EventTimer);

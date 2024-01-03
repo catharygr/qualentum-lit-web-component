@@ -41,20 +41,15 @@ export class TimerComponent extends LitElement {
   `;
 
   static properties = {
-    // eventtimer: { type: Boolean },
-    shoppingcarttimer: { type: Boolean },
+    eventtimer: { type: Boolean },
     btnpause: { type: Boolean },
     btnplay: { type: Boolean },
     btnreset: { type: Boolean },
     reverse: { type: Boolean },
     autoreset: { type: Boolean },
     autostart: { type: Boolean },
-    days: { type: Number },
-    hours: { type: Number },
-    minutes: { type: Number },
-    seconds: { type: Number },
-    // start: { type: Number },
-    // limit: { type: Number },
+    start: { type: Number },
+    limit: { type: Number },
     doubledigits: { type: Boolean },
     playDisabled: { type: Boolean },
     pauseDisabled: { type: Boolean },
@@ -63,20 +58,15 @@ export class TimerComponent extends LitElement {
 
   constructor() {
     super();
-    // this.eventtimer = false;
-    this.shoppingcarttimer = false;
+    this.eventtimer = false;
     this.btnpause = false;
     this.btnplay = false;
     this.btnreset = false;
     this.reverse = false;
     this.autoreset = false;
     this.autostart = false;
-    this.days = 0;
-    this.hours = 0;
-    this.minutes = 0;
-    this.seconds = 0;
-    // this.start = 0;
-    // this.limit = 20;
+    this.start = 0;
+    this.limit = 20;
     this.doubledigits = false;
     this.playDisabled = false;
     this.pauseDisabled = true;
@@ -170,16 +160,16 @@ export class TimerComponent extends LitElement {
     return html`
       <div class="timer-container">
         <h3 id="alert">Timer</h3>
-        ${this.shoppingcarttimer
-          ? html`<shopping-cart-timer></shopping-cart-timer>`
-          : html`<event-timer
+        ${this.eventtimer
+          ? html`<event-timer></event-timer>`
+          : html`<shopping-cart-timer
               .reverse=${this.reverse}
               .autoreset=${this.autoreset}
               .autostart=${this.autostart}
               .start=${this.start}
               .limit=${this.limit}
               .doubledigits=${this.doubledigits}
-            ></event-timer>`}
+            ></shopping-cart-timer>`}
 
         <div class="btn-container">
           ${this.btnpause
