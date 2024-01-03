@@ -1,6 +1,6 @@
 import { LitElement, html, css } from "lit";
-// import { ShoppingCartTimer } from "./shoppingCart-timer.js";
-// import { EventTimer } from "./event-timer.js";
+import "./shoppingCart-timer.js";
+import "./event-timer.js";
 
 export class TimerComponent extends LitElement {
   static styles = css`

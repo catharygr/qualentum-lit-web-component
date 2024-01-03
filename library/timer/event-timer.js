@@ -24,8 +24,7 @@ export class EventTimer extends LitElement {
       box-shadow: 0 0 0.5rem var(--primary-color);
       padding: 0.5rem;
       border-radius: 0.5rem;
-      width: 1rem;
-      height: 1rem;
+      min-width: 1.5rem; /* Ajusta el ancho mínimo para evitar que se colapsen */
     }
 
     .separator {
