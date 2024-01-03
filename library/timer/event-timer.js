@@ -92,15 +92,15 @@ export class EventTimer extends LitElement {
     let minutesValue = Math.floor((time % 3600) / 60);
     let secondsValue = time % 60;
 
-    this.daysElements.innerHTML =
+    this.daysElements.textContent =
       this.doubledigits && daysValue < 10 ? `0${daysValue}` : daysValue;
-    this.hoursElements.innerHTML =
+    this.hoursElements.textContent =
       this.doubledigits && hoursValue < 10 ? `0${hoursValue}` : hoursValue;
-    this.minutesElements.innerHTML =
+    this.minutesElements.textContent =
       this.doubledigits && minutesValue < 10
         ? `0${minutesValue}`
         : minutesValue;
-    this.secondsElements.innerHTML =
+    this.secondsElements.textContent =
       this.doubledigits && secondsValue < 10
         ? `0${secondsValue}`
         : secondsValue;

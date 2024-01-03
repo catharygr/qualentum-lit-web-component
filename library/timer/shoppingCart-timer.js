@@ -88,15 +88,16 @@ export class ShoppingCartTimer extends LitElement {
     let minutesValue = Math.floor(time / 60);
     let secondsValue = time % 60;
 
-    this.minutesElements.innerHTML =
+    this.minutesElements.textContent =
       this.doubledigits && minutesValue < 10
         ? `0${minutesValue}`
         : minutesValue;
-    this.secondsElements.innerHTML =
+    this.secondsElements.textContent =
       this.doubledigits && secondsValue < 10
         ? `0${secondsValue}`
         : secondsValue;
   };
+
   //Funciones que se ejecutan cuando se dispara un evento
   playTimer = () => {
     if (this.reverse) {
