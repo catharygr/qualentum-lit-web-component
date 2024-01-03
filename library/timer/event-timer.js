@@ -93,6 +93,62 @@ export class EventTimer extends LitElement {
     window.removeEventListener("reset", this.resetTimer, true);
   }
 
+  renderDisplay(time) {
+
+  playTimer = () => {
+    if (this.reverse) {
+      this.timer = setInterval(() => {
+        this.timeInSeconds--;
+        if (this.timeInSeconds <= 0) {
+          clearInterval(this.timer);
+          const event = new CustomEvent("timer-end", {
+            detail: {
+              message: "Timer ended",
+            },
+            bubbles: true,
+            composed: true,
+          });
+          this.dispatchEvent(event);
+          this.timeInSeconds = this.start;
+          this.renderDisplay(this.timeInSeconds);
+
+          // Auto reset
+          if (this.autoreset) {
+            this.playTimer();
+          }
+          return;
+        } else {
+          this.renderDisplay(this.timeInSeconds);
+        }
+      }, 1000);
+    }  else {
+      this.timer = setInterval(() => {
+        this.timeInSeconds++;
+        if (this.timeInSeconds >= this.limit) {
+          clearInterval(this.timer);
+          const event = new CustomEvent("timer-end", {
+            detail: {
+              message: "Timer ended",
+            },
+            bubbles: true,
+            composed: true,
+          });
+          this.dispatchEvent(event);
+          this.timeInSeconds = 0;
+          this.renderDisplay(this.timeInSeconds);
+
+          // Auto reset
+          if (this.autoreset) {
+            this.playTimer();
+          }
+          return;
+        } else {
+          this.renderDisplay(this.timeInSeconds);
+        }
+      }, 1000);
+    }
+  };
+
   startTimer = () => {
     if (this.timeInSeconds === 0) {
       this.timeInSeconds = this.start;
