@@ -36,7 +36,7 @@ export class EventTimer extends LitElement {
 
   constructor() {
     super();
-    this.timeInSeconds = 0;
+    this.timeInSeconds = null;
     this.timer = null;
   }
   static properties = {
@@ -62,18 +62,35 @@ export class EventTimer extends LitElement {
     }
   }
 
+  firstUpdated() {
+    this.daysElements = this.shadowRoot.getElementById("days");
+    this.hoursElements = this.shadowRoot.getElementById("hours");
+    this.minutesElements = this.shadowRoot.getElementById("minutes");
+    this.secondsElements = this.shadowRoot.getElementById("seconds");
+
+    if (this.reverse) {
+      this.timeInSeconds = this.start;
+    } else if (!this.reverse) {
+      this.timeInSeconds = 0;
+    }
+    this.renderDisplay(this.timeInSeconds);
+
+    // Auto start
+    if (this.autostart) {
+      this.playTimer();
+      const event = new CustomEvent("timer-autostart", {
+        bubbles: true,
+        composed: true,
+      });
+      this.dispatchEvent(event);
+    }
+  }
+
   disconnectedCallback() {
     super.disconnectedCallback();
     window.removeEventListener("play", this.playTimer, true);
     window.removeEventListener("pause", this.pauseTimer, true);
     window.removeEventListener("reset", this.resetTimer, true);
-  }
-
-  updated() {
-    this.daysElements = this.shadowRoot.getElementById("days");
-    this.hoursElements = this.shadowRoot.getElementById("hours");
-    this.minutesElements = this.shadowRoot.getElementById("minutes");
-    this.secondsElements = this.shadowRoot.getElementById("seconds");
   }
 
   startTimer = () => {
@@ -86,28 +103,15 @@ export class EventTimer extends LitElement {
   };
 
   render() {
-    const seconds = this.timeInSeconds % 60;
-    const minutes = Math.floor((this.timeInSeconds / 60) % 60);
-    const hours = Math.floor((this.timeInSeconds / 3600) % 24);
-    const days = Math.floor(this.timeInSeconds / 86400);
-
     return html`
       <div class="display">
-        <div id="days" class="days">
-          ${this.doubledigits ? this.pad(days) : days} days
-        </div>
+        <div id="days" class="days"></div>
         <div class="separator">:</div>
-        <div id="hours" class="hours">
-          ${this.doubledigits ? this.pad(hours) : hours} hours
-        </div>
+        <div id="hours" class="hours"></div>
         <div class="separator">:</div>
-        <div id="minutes" class="minutes">
-          ${this.doubledigits ? this.pad(minutes) : minutes} minutes
-        </div>
+        <div id="minutes" class="minutes"></div>
         <div class="separator">:</div>
-        <div id="seconds" class="seconds">
-          ${this.doubledigits ? this.pad(seconds) : seconds} seconds
-        </div>
+        <div id="seconds" class="seconds"></div>
       </div>
     `;
   }
