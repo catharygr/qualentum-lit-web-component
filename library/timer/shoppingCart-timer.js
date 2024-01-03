@@ -155,7 +155,9 @@ export class ShoppingCartTimer extends LitElement {
   };
 
   resetTimer = () => {
-    console.log("reset-hijo");
+    // clearInterval(this.timer); // Limpiar el intervalo del temporizador
+    // this.startInSeconds = this.start; // Restablecer startInSeconds al valor inicial
+    // this.renderDisplay(this.startInSeconds); // Actualizar la visualización del temporizador
   };
 
   render() {
