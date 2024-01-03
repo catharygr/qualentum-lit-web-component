@@ -49,8 +49,12 @@ export class TimerComponent extends LitElement {
     reverse: { type: Boolean },
     autoreset: { type: Boolean },
     autostart: { type: Boolean },
-    start: { type: Number },
-    limit: { type: Number },
+    days: { type: Number },
+    hours: { type: Number },
+    minutes: { type: Number },
+    seconds: { type: Number },
+    // start: { type: Number },
+    // limit: { type: Number },
     doubledigits: { type: Boolean },
     playDisabled: { type: Boolean },
     pauseDisabled: { type: Boolean },
@@ -67,8 +71,12 @@ export class TimerComponent extends LitElement {
     this.reverse = false;
     this.autoreset = false;
     this.autostart = false;
-    this.start = 0;
-    this.limit = 20;
+    this.days = 0;
+    this.hours = 0;
+    this.minutes = 0;
+    this.seconds = 0;
+    // this.start = 0;
+    // this.limit = 20;
     this.doubledigits = false;
     this.playDisabled = false;
     this.pauseDisabled = true;
