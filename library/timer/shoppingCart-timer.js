@@ -52,12 +52,15 @@ export class ShoppingCartTimer extends LitElement {
     window.addEventListener("play", this.playTimer, true);
     window.addEventListener("pause", this.pauseTimer, true);
     window.addEventListener("reset", this.resetTimer, true);
+  }
 
+  firstUpdated() {
     if (this.reverse) {
       this.startInSeconds = this.start;
     } else if (!this.reverse) {
       this.startInSeconds = 0;
     }
+    this.renderDisplay(this.startInSeconds);
 
     // Auto start
     if (this.autostart) {
