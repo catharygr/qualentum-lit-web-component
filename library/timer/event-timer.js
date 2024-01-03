@@ -12,6 +12,7 @@ export class EventTimer extends LitElement {
       text-align: center;
       margin-block: 1rem;
     }
+
     .days,
     .hours,
     .minutes,
@@ -36,30 +37,24 @@ export class EventTimer extends LitElement {
 
   constructor() {
     super();
-    this.timeInSeconds = null;
+    this.startInSeconds = null;
     this.timer = null;
   }
+
   static properties = {
+    reverse: { type: Boolean },
+    autoreset: { type: Boolean },
+    autostart: { type: Boolean },
     start: { type: Number },
     limit: { type: Number },
-    autostart: { type: Boolean },
-    autoreset: { type: Boolean },
     doubledigits: { type: Boolean },
   };
+
   connectedCallback() {
     super.connectedCallback();
     window.addEventListener("play", this.playTimer, true);
     window.addEventListener("pause", this.pauseTimer, true);
     window.addEventListener("reset", this.resetTimer, true);
-    // Auto start
-    if (this.autostart) {
-      this.playTimer();
-      const event = new CustomEvent("timer-autostart", {
-        bubbles: true,
-        composed: true,
-      });
-      this.dispatchEvent(event);
-    }
   }
 
   firstUpdated() {
@@ -69,13 +64,12 @@ export class EventTimer extends LitElement {
     this.secondsElements = this.shadowRoot.getElementById("seconds");
 
     if (this.reverse) {
-      this.timeInSeconds = this.start;
+      this.startInSeconds = this.start;
     } else if (!this.reverse) {
-      this.timeInSeconds = 0;
+      this.startInSeconds = 0;
     }
-    this.renderDisplay(this.timeInSeconds);
+    this.renderDisplay(this.startInSeconds);
 
-    // Auto start
     if (this.autostart) {
       this.playTimer();
       const event = new CustomEvent("timer-autostart", {
@@ -93,31 +87,32 @@ export class EventTimer extends LitElement {
     window.removeEventListener("reset", this.resetTimer, true);
   }
 
-  renderDisplay(time) {
-    const days = Math.floor(time / 86400);
-    const hours = Math.floor((time % 86400) / 3600);
-    const minutes = Math.floor((time % 3600) / 60);
-    const seconds = Math.floor(time % 60);
+  renderDisplay = (time) => {
+    let daysValue = Math.floor(time / (24 * 60 * 60));
+    let hoursValue = Math.floor((time % (24 * 60 * 60)) / 3600);
+    let minutesValue = Math.floor((time % 3600) / 60);
+    let secondsValue = time % 60;
 
-    if (this.doubledigits) {
-      this.daysElements.innerHTML = this.pad(days);
-      this.hoursElements.innerHTML = this.pad(hours);
-      this.minutesElements.innerHTML = this.pad(minutes);
-      this.secondsElements.innerHTML = this.pad(seconds);
-    } else {
-      this.daysElements.innerHTML = days;
-      this.hoursElements.innerHTML = hours;
-      this.minutesElements.innerHTML = minutes;
-      this.secondsElements.innerHTML = seconds;
-    }
-  }
+    this.daysElements.innerHTML =
+      this.doubledigits && daysValue < 10 ? `0${daysValue}` : daysValue;
+    this.hoursElements.innerHTML =
+      this.doubledigits && hoursValue < 10 ? `0${hoursValue}` : hoursValue;
+    this.minutesElements.innerHTML =
+      this.doubledigits && minutesValue < 10
+        ? `0${minutesValue}`
+        : minutesValue;
+    this.secondsElements.innerHTML =
+      this.doubledigits && secondsValue < 10
+        ? `0${secondsValue}`
+        : secondsValue;
+  };
 
   playTimer = () => {
     if (this.reverse) {
       this.timer = setInterval(() => {
-        this.timeInSeconds--;
-        if (this.timeInSeconds <= 0) {
+        if (this.startInSeconds <= 0) {
           clearInterval(this.timer);
+
           const event = new CustomEvent("timer-end", {
             detail: {
               message: "Timer ended",
@@ -126,23 +121,23 @@ export class EventTimer extends LitElement {
             composed: true,
           });
           this.dispatchEvent(event);
-          this.timeInSeconds = this.start;
-          this.renderDisplay(this.timeInSeconds);
+          this.startInSeconds = this.start;
+          this.renderDisplay(this.startInSeconds);
 
-          // Auto reset
           if (this.autoreset) {
             this.playTimer();
           }
           return;
         } else {
-          this.renderDisplay(this.timeInSeconds);
+          this.startInSeconds--;
+          this.renderDisplay(this.startInSeconds);
         }
       }, 1000);
     } else {
       this.timer = setInterval(() => {
-        this.timeInSeconds++;
-        if (this.timeInSeconds >= this.limit) {
+        if (this.startInSeconds >= this.limit) {
           clearInterval(this.timer);
+
           const event = new CustomEvent("timer-end", {
             detail: {
               message: "Timer ended",
@@ -151,16 +146,16 @@ export class EventTimer extends LitElement {
             composed: true,
           });
           this.dispatchEvent(event);
-          this.timeInSeconds = 0;
-          this.renderDisplay(this.timeInSeconds);
+          this.startInSeconds = 0;
+          this.renderDisplay(this.startInSeconds);
 
-          // Auto reset
           if (this.autoreset) {
             this.playTimer();
           }
           return;
         } else {
-          this.renderDisplay(this.timeInSeconds);
+          this.startInSeconds++;
+          this.renderDisplay(this.startInSeconds);
         }
       }, 1000);
     }
@@ -173,28 +168,26 @@ export class EventTimer extends LitElement {
   resetTimer = () => {
     clearInterval(this.timer);
     if (this.reverse) {
-      this.timeInSeconds = this.start;
+      this.startInSeconds = this.start;
     } else if (!this.reverse) {
-      this.timeInSeconds = 0;
+      this.startInSeconds = 0;
     }
-    this.renderDisplay(this.timeInSeconds);
+    this.renderDisplay(this.startInSeconds);
   };
 
   render() {
     return html`
       <div class="display">
-        <div id="days" class="days"></div>
+        <div id="days" class="days">00</div>
         <div class="separator">:</div>
-        <div id="hours" class="hours"></div>
+        <div id="hours" class="hours">00</div>
         <div class="separator">:</div>
-        <div id="minutes" class="minutes"></div>
+        <div id="minutes" class="minutes">00</div>
         <div class="separator">:</div>
-        <div id="seconds" class="seconds"></div>
+        <div id="seconds" class="seconds">00</div>
       </div>
     `;
   }
-
-  pad(number) {
-    return number.toString().padStart(2, "0");
-  }
 }
+
+customElements.define("event-timer", EventTimer);

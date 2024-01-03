@@ -42,6 +42,7 @@ export class TimerComponent extends LitElement {
 
   static properties = {
     eventtimer: { type: Boolean },
+    shoppingcarttimer: { type: Boolean },
     btnpause: { type: Boolean },
     btnplay: { type: Boolean },
     btnreset: { type: Boolean },
@@ -58,7 +59,8 @@ export class TimerComponent extends LitElement {
 
   constructor() {
     super();
-    this.eventtimer = false;
+    this.eventtimer = true;
+    this.shoppingcarttimer = false;
     this.btnpause = false;
     this.btnplay = false;
     this.btnreset = false;
@@ -161,7 +163,14 @@ export class TimerComponent extends LitElement {
       <div class="timer-container">
         <h3 id="alert">Timer</h3>
         ${this.eventtimer
-          ? html`<event-timer></event-timer>`
+          ? html`<event-timer
+              .reverse=${this.reverse}
+              .autoreset=${this.autoreset}
+              .autostart=${this.autostart}
+              .start=${this.start}
+              .limit=${this.limit}
+              .doubledigits=${this.doubledigits}
+            ></event-timer>`
           : html`<shopping-cart-timer
               .reverse=${this.reverse}
               .autoreset=${this.autoreset}
