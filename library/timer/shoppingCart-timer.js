@@ -55,6 +55,9 @@ export class ShoppingCartTimer extends LitElement {
   }
 
   firstUpdated() {
+    this.minutesElements = this.shadowRoot.getElementById("minutes");
+    this.secondsElements = this.shadowRoot.getElementById("seconds");
+
     if (this.reverse) {
       this.startInSeconds = this.start;
     } else if (!this.reverse) {
@@ -79,11 +82,7 @@ export class ShoppingCartTimer extends LitElement {
     window.removeEventListener("pause", this.pauseTimer, true);
     window.removeEventListener("reset", this.resetTimer, true);
   }
-  // Cuando queremos acceder al DOM que todavía no se ha renderizado
-  updated() {
-    this.minutesElements = this.shadowRoot.getElementById("minutes");
-    this.secondsElements = this.shadowRoot.getElementById("seconds");
-  }
+
   // La funcion que rederiza el tiempo en el display
   renderDisplay = (time) => {
     let minutesValue = Math.floor(time / 60);
