@@ -35,11 +35,10 @@ export class ShoppingCartTimer extends LitElement {
 
   constructor() {
     super();
-    this.startInSeconds = 0;
+    this.startInSeconds = null;
     this.timer = null;
   }
   static properties = {
-    title: { type: String },
     reverse: { type: Boolean },
     autoreset: { type: Boolean },
     autostart: { type: Boolean },
@@ -47,12 +46,18 @@ export class ShoppingCartTimer extends LitElement {
     limit: { type: Number },
     doubledigits: { type: Boolean },
   };
-
+  // Lo que ocurre cuando se conecta el componente al DOM
   connectedCallback() {
     super.connectedCallback();
     window.addEventListener("play", this.playTimer, true);
     window.addEventListener("pause", this.pauseTimer, true);
     window.addEventListener("reset", this.resetTimer, true);
+
+    if (this.reverse) {
+      this.startInSeconds = this.start;
+    } else if (!this.reverse) {
+      this.startInSeconds = 0;
+    }
 
     // Auto start
     if (this.autostart) {
@@ -64,18 +69,19 @@ export class ShoppingCartTimer extends LitElement {
       this.dispatchEvent(event);
     }
   }
+  // Lo que ocurre cuando se desconecta el componente del DOM
   disconnectedCallback() {
     super.disconnectedCallback();
     window.removeEventListener("play", this.playTimer, true);
     window.removeEventListener("pause", this.pauseTimer, true);
     window.removeEventListener("reset", this.resetTimer, true);
   }
-
+  // Cuando queremos acceder al DOM que todavía no se ha renderizado
   updated() {
     this.minutesElements = this.shadowRoot.getElementById("minutes");
     this.secondsElements = this.shadowRoot.getElementById("seconds");
   }
-
+  // La funcion que rederiza el tiempo en el display
   renderDisplay = (time) => {
     let minutesValue = Math.floor(time / 60);
     let secondsValue = time % 60;
@@ -89,11 +95,8 @@ export class ShoppingCartTimer extends LitElement {
         ? `0${secondsValue}`
         : secondsValue;
   };
-
+  //Funciones que se ejecutan cuando se dispara un evento
   playTimer = () => {
-    if (this.startInSeconds === 0) {
-      this.startInSeconds = this.start;
-    }
     if (this.reverse) {
       this.timer = setInterval(() => {
         if (this.startInSeconds <= 0) {
@@ -108,11 +111,11 @@ export class ShoppingCartTimer extends LitElement {
             composed: true,
           });
           this.dispatchEvent(event);
+          this.startInSeconds = this.start;
+          this.renderDisplay(this.startInSeconds);
 
           // Autoreset
           if (this.autoreset) {
-            this.startInSeconds = this.start;
-            this.renderDisplay(this.startInSeconds);
             this.playTimer();
           }
           return;
@@ -122,7 +125,6 @@ export class ShoppingCartTimer extends LitElement {
         }
       }, 1000);
     } else {
-      this.startInSeconds = 0;
       this.timer = setInterval(() => {
         if (this.startInSeconds >= this.limit) {
           clearInterval(this.timer);
@@ -135,10 +137,10 @@ export class ShoppingCartTimer extends LitElement {
             composed: true,
           });
           this.dispatchEvent(event);
+          this.startInSeconds = 0;
+          this.renderDisplay(this.startInSeconds);
           // Autoreset
           if (this.autoreset) {
-            this.startInSeconds = 0;
-            this.renderDisplay(this.startInSeconds);
             this.playTimer();
           }
           return;
@@ -155,9 +157,13 @@ export class ShoppingCartTimer extends LitElement {
   };
 
   resetTimer = () => {
-    clearInterval(this.timer); // Limpiar el intervalo del temporizador
-    this.startInSeconds = this.start; // Restablecer startInSeconds al valor inicial
-    this.renderDisplay(this.startInSeconds); // Actualizar la visualización del temporizador
+    clearInterval(this.timer);
+    if (this.reverse) {
+      this.startInSeconds = this.start;
+    } else if (!this.reverse) {
+      this.startInSeconds = 0;
+    }
+    this.renderDisplay(this.startInSeconds);
   };
 
   render() {

@@ -42,7 +42,6 @@ export class TimerComponent extends LitElement {
 
   static properties = {
     eventtimer: { type: Boolean },
-    title: { type: String },
     btnpause: { type: Boolean },
     btnplay: { type: Boolean },
     btnreset: { type: Boolean },
@@ -60,7 +59,6 @@ export class TimerComponent extends LitElement {
   constructor() {
     super();
     this.eventtimer = false;
-    this.title = "nada";
     this.btnpause = false;
     this.btnplay = false;
     this.btnreset = false;
@@ -74,29 +72,34 @@ export class TimerComponent extends LitElement {
     this.pauseDisabled = true;
     this.resetDisabled = false;
   }
-
+  // Lo que ocurre cuando se conecta el componente al DOM
   connectedCallback() {
     super.connectedCallback();
-    window.addEventListener("timer-end", this.timerEnd);
+    window.addEventListener("timer-end", this.alertTimerEnd);
     window.addEventListener("timer-autostart", this.autoPlayTimer);
+    window.addEventListener("reset", this.alertTimerReset);
+    window.addEventListener("play", this.alertPlayTimer);
+    window.addEventListener("pause", this.alertPauseTimer);
   }
-
+  // Lo que ocurre cuando se desconecta el componente al DOM
   disconnectedCallback() {
     super.disconnectedCallback();
     window.removeEventListener("timer-end", this.timerEnd);
     window.removeEventListener("timer-autostart", this.autoPlayTimer);
+    window.removeEventListener("reset", this.alertTimerReset);
+    window.removeEventListener("play", this.alertPlayTimer);
+    window.removeEventListener("pause", this.alertPauseTimer);
   }
-
+  // Cuando queremos acceder al DOM que todavía no se ha renderizado
   updated() {
     this.alert = this.shadowRoot.getElementById("alert");
   }
-
+  // Funciones que se ejecutan cuando se dispara un evento alertas
   autoPlayTimer = () => {
     this.playDisabled = true;
     this.pauseDisabled = false;
   };
-
-  timerEnd = (event) => {
+  alertTimerEnd = (event) => {
     if (this.autoreset) {
       return;
     }
@@ -104,9 +107,23 @@ export class TimerComponent extends LitElement {
     this.playDisabled = false;
     this.pauseDisabled = true;
   };
-
+  alertTimerReset = (event) => {
+    this.alert.textContent = event.detail.message;
+    this.playDisabled = false;
+    this.pauseDisabled = true;
+  };
+  alertPlayTimer = (event) => {
+    this.alert.textContent = event.detail.message;
+  };
+  alertPauseTimer = () => {
+    this.alert.textContent = "Timer paused";
+  };
+  // Funciones que se ejecutan cuando se dispara un evento botones
   playTimer = () => {
     const event = new CustomEvent("play", {
+      detail: {
+        message: "Timer started",
+      },
       bubbles: true,
       composed: true,
     });
@@ -116,6 +133,9 @@ export class TimerComponent extends LitElement {
   };
   pauseTimer = () => {
     const event = new CustomEvent("pause", {
+      detail: {
+        message: "Timer paused",
+      },
       bubbles: true,
       composed: true,
     });
@@ -125,10 +145,15 @@ export class TimerComponent extends LitElement {
   };
   resetTimer = () => {
     const event = new CustomEvent("reset", {
+      detail: {
+        message: "Timer reset",
+      },
       bubbles: true,
       composed: true,
     });
     this.dispatchEvent(event);
+    this.playDisabled = false;
+    this.pauseDisabled = true;
   };
 
   render() {
@@ -138,7 +163,6 @@ export class TimerComponent extends LitElement {
         ${this.eventtimer
           ? html`<event-timer></event-timer>`
           : html`<shopping-cart-timer
-              .title=${this.title}
               .reverse=${this.reverse}
               .autoreset=${this.autoreset}
               .autostart=${this.autostart}
