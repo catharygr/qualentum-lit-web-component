@@ -14,3 +14,12 @@
 - El método render define la estructura HTML del componente. Utiliza las propiedades del componente para determinar qué elementos renderizar y cómo deben comportarse. Por ejemplo, los botones de play, pause, y reset se renderizan en función de las propiedades btnplay, btnpause, y btnreset, respectivamente.
 - Finalmente, el componente se registra con el nombre timer-component utilizando customElements.define. Esto permite que el componente se utilice en HTML como <timer-component>.
 
+## Componente hijo - shoppingCart-timer
+- Este componente es uno de los dos componentes hijos que se pueden cargar en el componente padre, timer-component, basado en un atributo booleano.
+El componente shoppingCart-timer es un temporizador que cuenta hacia arriba o hacia abajo, dependiendo de la propiedad reverse.
+- El componente tiene varias propiedades que controlan su comportamiento y apariencia. Estas propiedades incluyen reverse, autoreset, autostart, start, limit, y doubledigits.
+- El componente utiliza varios métodos del ciclo de vida de LitElement, incluyendo connectedCallback, disconnectedCallback, y firstUpdated. Estos métodos se utilizan para manejar eventos, actualizar el DOM, y limpiar los recursos cuando el componente se desconecta del DOM.
+- El componente emite y escucha varios eventos personalizados. Estos eventos se utilizan para controlar el comportamiento del temporizador y actualizar el estado del componente.
+- El método render define la estructura HTML del componente. Utiliza las propiedades del componente para determinar qué elementos renderizar y cómo deben comportarse. Por ejemplo, los elementos de minutos y segundos se renderizan en función de la propiedad doubledigits.
+- Finalmente, el componente se registra con el nombre shopping-cart-timer utilizando customElements.define. Esto permite que el componente se utilice en HTML como <shopping-cart-timer>.
+
