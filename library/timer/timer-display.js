@@ -1,6 +1,6 @@
 import { LitElement, html, css } from "lit";
 
-export class EventTimer extends LitElement {
+export class TimerDisplay extends LitElement {
   static styles = css`
     .display {
       display: flex;
@@ -47,6 +47,7 @@ export class EventTimer extends LitElement {
     start: { type: Number },
     limit: { type: Number },
     doubledigits: { type: Boolean },
+    shorttimer: { type: Boolean },
   };
 
   connectedCallback() {
@@ -87,23 +88,37 @@ export class EventTimer extends LitElement {
   }
 
   renderDisplay = (time) => {
-    let daysValue = Math.floor(time / (24 * 60 * 60));
-    let hoursValue = Math.floor((time % (24 * 60 * 60)) / 3600);
-    let minutesValue = Math.floor((time % 3600) / 60);
-    let secondsValue = time % 60;
+    if (this.shorttimer) {
+      let minutesValue = Math.floor(time / 60);
+      let secondsValue = time % 60;
 
-    this.daysElements.textContent =
-      this.doubledigits && daysValue < 10 ? `0${daysValue}` : daysValue;
-    this.hoursElements.textContent =
-      this.doubledigits && hoursValue < 10 ? `0${hoursValue}` : hoursValue;
-    this.minutesElements.textContent =
-      this.doubledigits && minutesValue < 10
-        ? `0${minutesValue}`
-        : minutesValue;
-    this.secondsElements.textContent =
-      this.doubledigits && secondsValue < 10
-        ? `0${secondsValue}`
-        : secondsValue;
+      this.minutesElements.textContent =
+        this.doubledigits && minutesValue < 10
+          ? `0${minutesValue}`
+          : minutesValue;
+      this.secondsElements.textContent =
+        this.doubledigits && secondsValue < 10
+          ? `0${secondsValue}`
+          : secondsValue;
+    } else {
+      let daysValue = Math.floor(time / (24 * 60 * 60));
+      let hoursValue = Math.floor((time % (24 * 60 * 60)) / 3600);
+      let minutesValue = Math.floor((time % 3600) / 60);
+      let secondsValue = time % 60;
+
+      this.daysElements.textContent =
+        this.doubledigits && daysValue < 10 ? `0${daysValue}` : daysValue;
+      this.hoursElements.textContent =
+        this.doubledigits && hoursValue < 10 ? `0${hoursValue}` : hoursValue;
+      this.minutesElements.textContent =
+        this.doubledigits && minutesValue < 10
+          ? `0${minutesValue}`
+          : minutesValue;
+      this.secondsElements.textContent =
+        this.doubledigits && secondsValue < 10
+          ? `0${secondsValue}`
+          : secondsValue;
+    }
   };
 
   playTimer = () => {
@@ -177,10 +192,12 @@ export class EventTimer extends LitElement {
   render() {
     return html`
       <div class="display">
-        <div id="days" class="days">00</div>
-        <div class="separator">:</div>
-        <div id="hours" class="hours">00</div>
-        <div class="separator">:</div>
+        ${!this.shorttimer
+          ? html`<div id="days" class="days">00</div>
+              <div class="separator">:</div>
+              <div id="hours" class="hours">00</div>
+              <div class="separator">:</div>`
+          : ""}
         <div id="minutes" class="minutes">00</div>
         <div class="separator">:</div>
         <div id="seconds" class="seconds">00</div>
@@ -189,4 +206,4 @@ export class EventTimer extends LitElement {
   }
 }
 
-customElements.define("event-timer", EventTimer);
+customElements.define("timer-display", TimerDisplay);

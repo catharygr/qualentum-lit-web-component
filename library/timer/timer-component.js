@@ -1,6 +1,5 @@
 import { LitElement, html, css } from "lit";
-import "./shoppingCart-timer.js";
-import "./event-timer.js";
+import "./timer-display.js";
 
 export class TimerComponent extends LitElement {
   static styles = css`
@@ -41,8 +40,7 @@ export class TimerComponent extends LitElement {
   `;
 
   static properties = {
-    eventtimer: { type: Boolean },
-    shoppingcarttimer: { type: Boolean },
+    shorttimer: { type: Boolean },
     btnpause: { type: Boolean },
     btnplay: { type: Boolean },
     btnreset: { type: Boolean },
@@ -59,8 +57,7 @@ export class TimerComponent extends LitElement {
 
   constructor() {
     super();
-    this.eventtimer = true;
-    this.shoppingcarttimer = false;
+    this.shorttimer = false;
     this.btnpause = false;
     this.btnplay = false;
     this.btnreset = false;
@@ -162,23 +159,15 @@ export class TimerComponent extends LitElement {
     return html`
       <div class="timer-container">
         <h3 id="alert">Timer</h3>
-        ${this.eventtimer
-          ? html`<event-timer
-              .reverse=${this.reverse}
-              .autoreset=${this.autoreset}
-              .autostart=${this.autostart}
-              .start=${this.start}
-              .limit=${this.limit}
-              .doubledigits=${this.doubledigits}
-            ></event-timer>`
-          : html`<shopping-cart-timer
-              .reverse=${this.reverse}
-              .autoreset=${this.autoreset}
-              .autostart=${this.autostart}
-              .start=${this.start}
-              .limit=${this.limit}
-              .doubledigits=${this.doubledigits}
-            ></shopping-cart-timer>`}
+        <timer-display
+          .reverse=${this.reverse}
+          .autoreset=${this.autoreset}
+          .autostart=${this.autostart}
+          .start=${this.start}
+          .limit=${this.limit}
+          .doubledigits=${this.doubledigits}
+          .shorttimer=${this.shorttimer}
+        ></timer-display>
 
         <div class="btn-container">
           ${this.btnpause
