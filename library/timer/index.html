@@ -11,17 +11,26 @@
     <h1>Timer Component</h1>
     <a href="/"> &lt; Volver</a>
 
-    <!-- shorttimer btnpause btnplay btnreset reverse autostart autoreset start="0" limit="20" doubledigits -->
+    <!--
+      shorttimer     Sólo muestra minutos y segundos 
+      btnpause       Muestra el botón de pausa
+      btnplay        Muestra el botón de play
+      btnreset       Muestra el botón de reset
+      autostart      Inicia el contador automáticamente
+      autoreset      Reinicia el contador automáticamente
+      reverse        Cuenta atrás, se usa con start
+      start="86412"  Inicia el contador en un dia y doce segundos
+      limit="10"     Limita el contador a 10 segundos, se usa cuando reverse es false
+      doubledigits   Muestra los números con dos dígitos cuando es menor a 10
+    -->
 
     <timer-component
-      start="86400"
-      limit="10"
+      start="86412"
       doubledigits
       btnpause
       btnplay
       btnreset
       reverse
-      shorttimer
     ></timer-component>
 
     <script type="module" src="./index.js"></script>
