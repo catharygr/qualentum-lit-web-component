@@ -39,6 +39,22 @@ export class TimerComponent extends LitElement {
     }
   `;
 
+  static properties = {
+    shorttimer: { type: Boolean },
+    btnpause: { type: Boolean },
+    btnplay: { type: Boolean },
+    btnreset: { type: Boolean },
+    reverse: { type: Boolean },
+    autoreset: { type: Boolean },
+    autostart: { type: Boolean },
+    start: { type: Number },
+    limit: { type: Number },
+    doubledigits: { type: Boolean },
+    playDisabled: { type: Boolean },
+    pauseDisabled: { type: Boolean },
+    resetDisabled: { type: Boolean },
+  };
+
   constructor() {
     super();
     this.shorttimer = false;
