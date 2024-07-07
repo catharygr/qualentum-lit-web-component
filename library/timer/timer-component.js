@@ -90,7 +90,7 @@ export class TimerComponent extends LitElement {
     window.removeEventListener("pause", this.alertPauseTimer);
   }
   // Cuando queremos acceder al DOM que todavía no se ha renderizado
-  updated() {
+  firstUpdated() {
     this.alert = this.shadowRoot.getElementById("alert");
   }
   // Funciones que se ejecutan cuando se dispara un evento alertas
