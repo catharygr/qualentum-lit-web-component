@@ -4,7 +4,7 @@
 - He utilizado grid para centrar el contenido en el centro de la página
 - Después de analizar el problema he decidido resolver el problema creando dos componentes.
 
-## Componente padre - timer-component
+### Componente padre - timer-component
 - En en el componente padre he creado tres botones y la renderización de cada uno de los botones son configurables con sus respectivos atributos.
 - Los tres botones despacharán sus respectivos eventos que lo utilizarán en el componente hijo para controlar el comportamiento del temporizador, como pausarlo, reanudarlo o restablecerlo.
 - El componente tiene varias propiedades que controlan su comportamiento y apariencia. Estas propiedades incluyen shorttimer, btnpause, btnplay, btnreset, reverse, autoreset, autostart, start, limit, doubledigits.
