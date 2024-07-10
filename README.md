@@ -13,7 +13,7 @@
 - El método render define la estructura HTML del componente. Utiliza las propiedades del componente para determinar qué elementos renderizar y cómo deben comportarse. Por ejemplo, los botones de play, pause, y reset se renderizan en función de las propiedades btnplay, btnpause, y btnreset, respectivamente.
 - Finalmente, el componente se registra con el nombre timer-component utilizando customElements.define. Esto permite que el componente se utilice en HTML como <timer-component>.
 
-## Componente hijo - timer-display
+### Componente hijo - timer-display
 - Este componente hijo se carga en el componente padre, timer-component.
 - El componente timer-display es un temporizador que cuenta hacia arriba o hacia abajo, dependiendo de la propiedad reverse.
 - El componente tiene varias propiedades que controlan su comportamiento y apariencia. Estas propiedades incluyen reverse, autoreset, autostart, start, limit, y doubledigits.
