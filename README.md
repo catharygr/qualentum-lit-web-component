@@ -1,4 +1,4 @@
-# qualentum-lit-web-component
+## qualentum-lit-web-component
 - He creado el documento index.html donde se va a llamar el web component
 - He reutilizado varias propiedades existentes en la plantilla 
 - He utilizado grid para centrar el contenido en el centro de la página
