@@ -23,7 +23,7 @@
 - El método render define la estructura HTML del componente. Utiliza las propiedades del componente para determinar qué elementos renderizar y cómo deben comportarse. Por ejemplo, los elementos de minutos y segundos se renderizan en función de la propiedad doubledigits.
 - Finalmente, el componente se registra con el nombre timer-display utilizando customElements.define. Esto permite que el componente se utilice en HTML como <timer-display>.
 
-## HTMl
+### HTMl
 - El componente del temporizador se incluye con la etiqueta <timer-component>.
 
 Un saludo.
